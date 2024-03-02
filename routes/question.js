@@ -16,4 +16,32 @@ router.get("/list", async function (req, res, next) {
   res.send(ques);
 });
 
+router.patch("/:id", async (req, res) => {
+  const { id } = req.params;
+  const payload = req.body;
+  try {
+    const ques = await db.question_table.update(payload, { where: { id } });
+    if (ques) {
+      res.status(200).send(ques);
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(400).send(error);
+  }
+});
+
+router.delete("/:id", async (req, res) => {
+  const { id } = req.params;
+  try {
+    const ques = await db.question_table.destroy({ where: { id } });
+    console.log(ques);
+    if (ques) {
+      res.status(200).send(ques);
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(400).send(error);
+  }
+});
+
 module.exports = router;

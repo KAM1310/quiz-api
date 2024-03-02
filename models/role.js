@@ -14,9 +14,7 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Role.init({
-    admin: DataTypes.STRING,
-    superAdmin: DataTypes.STRING,
-    user: DataTypes.STRING
+    name: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'Role',

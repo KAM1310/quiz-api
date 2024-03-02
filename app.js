@@ -30,7 +30,7 @@ app.use("/users", usersRouter);
 app.use("/question", questionRouter);
 app.use("/quiz-table", quizTableRouter);
 app.use("/auth", registerRouter);
-app.use("/role", registerRouter);
+app.use("/role", roleRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

@@ -2,7 +2,6 @@ var express = require("express");
 var router = express();
 const db = require("../models");
 const md5 = require("md5");
-// const { Jwt } = require('jsonwebtoken');
 const jwt = require("jsonwebtoken");
 
 router.post("/register", async (req, res, next) => {
@@ -21,7 +20,7 @@ router.post("/register", async (req, res, next) => {
 });
 
 router.post("/login", async (req, res) => {
-  const { PhoneNumber, password } = req.body;
+  const { phoneNumber, password } = req.body;
   try {
     const user = await db.Register_user.findOne({
       //it check the user name.
