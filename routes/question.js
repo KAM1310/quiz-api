@@ -5,17 +5,18 @@ const md5 = require("md5");
 // const { Jwt } = require('jsonwebtoken');
 const jwt = require("jsonwebtoken");
 
+// create------------------
 router.post("/create", async function (req, res, next) {
   const payload = req.body;
   const re = await db.question_table.create(payload);
   res.status(200).send(re);
 });
-
+// --------------------read
 router.get("/list", async function (req, res, next) {
   const ques = await db.question_table.findAll({});
   res.send(ques);
 });
-
+//-------------------update
 router.patch("/:id", async (req, res) => {
   const { id } = req.params;
   const payload = req.body;
@@ -29,7 +30,7 @@ router.patch("/:id", async (req, res) => {
     res.status(400).send(error);
   }
 });
-
+// ----------------------delte
 router.delete("/:id", async (req, res) => {
   const { id } = req.params;
   try {
