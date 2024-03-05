@@ -31,18 +31,19 @@ router.patch("/:id", async (req, res) => {
   }
 });
 // ----------------------delte
-router.delete("/:id", async (req, res) => {
+
+router.delete("/:id", async (req, res, next) => {
   const { id } = req.params;
-  try {
-    const ques = await db.question_table.destroy({ where: { id } });
-    console.log(ques);
-    if (ques) {
-      res.status(200).send(ques);
-    }
-  } catch (error) {
-    console.log(error);
-    res.status(400).send(error);
+
+  const user = await db.question_table.findOne({ where: { id } });
+  if (user) {
+    await user.destroy();
+  } else {
+    res.send("404 - record not found");
+    return;
   }
+
+  res.send("User deleted successfully...!!!");
 });
 
 module.exports = router;
