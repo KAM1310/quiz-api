@@ -6,12 +6,19 @@ const jwt = require("jsonwebtoken");
 
 router.post("/register", async (req, res, next) => {
   const payload = req.body;
-  // console.log(payload, req.body);
   payload.password = md5(payload.password);
   try {
     const user = await db.Register_user.create(payload);
     if (user) {
-      res.status(200).send(user);
+      const token = jwt.sign(
+        {
+          data: user,
+        },
+        "secret",
+        { expiresIn: "1h" }
+      );
+      res.status(200).json({ token, userInfo: user });
+      // res.status(200).send(user);
       return;
     }
   } catch (error) {
@@ -44,7 +51,7 @@ router.post("/login", async (req, res) => {
         "secret",
         { expiresIn: "1h" }
       );
-      res.status(200).json({ token });
+      res.status(200).json({ token, userInfo: user });
     }
   } catch (error) {
     res.status(400).json({ error: error.message });
