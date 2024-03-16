@@ -9,11 +9,23 @@ router.post("/create", async function (req, res, next) {
 });
 
 router.get("/list", async function (req, res, next) {
-  const quiz_table = await db.Quiz_table.findAll({});
+  let { limit, page } = req.query;
+  if (!limit) {
+    limit = 10;
+  }
+  if (!page) {
+    page = 1;
+  }
+
+  const offset = (page - 1) * limit;
+  const quiz_table = await db.Quiz_table.findAll({
+    limit,
+    offset,
+  });
   res.send(quiz_table);
 });
 
-router.put("/:id", async (req, res) => {
+router.patch("/:id", async (req, res) => {
   const { id } = req.params;
   const payload = req.body;
   try {
