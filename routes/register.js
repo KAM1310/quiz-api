@@ -3,6 +3,7 @@ var router = express();
 const db = require("../models");
 const md5 = require("md5");
 const jwt = require("jsonwebtoken");
+// const jwtdecode = require("jwt-decode")
 
 router.post("/register", async (req, res, next) => {
   const payload = req.body;
@@ -23,7 +24,7 @@ router.post("/login", async (req, res) => {
   const { phoneNumber, password } = req.body;
   try {
     const user = await db.Register_user.findOne({
-      //it check the user name.
+      //it check for the person whoes name phone number is match with phoneNumber and get it .
       where: {
         phoneNumber: phoneNumber,
       },
@@ -43,8 +44,10 @@ router.post("/login", async (req, res) => {
         },
         "secret",
         { expiresIn: "1h" }
+
       );
       res.status(200).json({ token });
+
     }
   } catch (error) {
     res.status(400).json({ error: error.message });
