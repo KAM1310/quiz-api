@@ -3,6 +3,18 @@ var router = express();
 const db = require("../models");
 const jwt = require("jsonwebtoken");
 
+const auth = (req, res, next) => {
+  try {
+    const user = jwt.verify(token.replace(/Bearer/i, '').trim(), "secret", { ignoreExpiration: true });
+    console.log(user);
+    next();
+  } catch (error) {
+    // res.status(400).send(error);
+    console.log(error)
+  }
+
+};
+
 router.post("/create", auth, async function (req, res, next) {
   const payload = req.body;
   // console.log(payload);
@@ -35,8 +47,8 @@ router.post("/create", auth, async function (req, res, next) {
 
   const token = req.headers['authorization'];
   // console.log(token);
-  const user = jwt.verify(token.replace(/Bearer/i, '').trim(), "secret", { ignoreExpiration: true });
-  console.log(user)
+  // const user = jwt.verify(token.replace(/Bearer/i, '').trim(), "secret", { ignoreExpiration: true });
+  // console.log(user)
   const userId = user.data.id
   const name = user.data.name
 
