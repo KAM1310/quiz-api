@@ -3,7 +3,6 @@ var router = express();
 const db = require("../models");
 const md5 = require("md5");
 const jwt = require("jsonwebtoken");
-// const jwtdecode = require("jwt-decode")
 
 router.post("/register", async (req, res, next) => {
   // res.send('test');
@@ -52,7 +51,6 @@ router.post("/login", async (req, res) => {
         },
         "secret",
         { expiresIn: "1h" }
-
       );
       res.status(200).json({ token, userInfo: user });
     }
