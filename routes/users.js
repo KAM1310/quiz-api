@@ -3,6 +3,7 @@ var router = express.Router();
 const db = require("../models");
 const { Op } = require("sequelize");
 
+// searching
 router.get("/list", async function (req, res, next) {
   const { q } = req.query;
   const where = {};
@@ -20,7 +21,7 @@ router.get("/list", async function (req, res, next) {
       },
     ];
   }
-
+  // pagination
   let { limit, page } = req.query;
   if (!limit) {
     limit = 5;
@@ -28,6 +29,7 @@ router.get("/list", async function (req, res, next) {
   if (!page) {
     page = 1;
   }
+
 
   // type casting
   page = +page;
@@ -38,6 +40,8 @@ router.get("/list", async function (req, res, next) {
   // const ques = await db.Register_user.findAll({ where });
   res.status(200).send(ques);
 });
+
+//---------------------------------------------------------------
 
 router.patch("/:id", async (req, res) => {
   const { id } = req.params;

@@ -5,7 +5,9 @@ const jwt = require("jsonwebtoken");
 
 const auth = (req, res, next) => {
   try {
+    const { authorization: token } = req.headers;
     const user = jwt.verify(token.replace(/Bearer/i, '').trim(), "secret", { ignoreExpiration: true });
+    req.user = user.data;
     console.log(user);
     next();
   } catch (error) {
@@ -17,6 +19,7 @@ const auth = (req, res, next) => {
 
 router.post("/create", auth, async function (req, res, next) {
   const payload = req.body;
+  const { user } = req;
   // console.log(payload);
 
   const ids = Object.keys(payload).map(item => +item.replace(/ansID_/, ''));
@@ -49,8 +52,8 @@ router.post("/create", auth, async function (req, res, next) {
   // console.log(token);
   // const user = jwt.verify(token.replace(/Bearer/i, '').trim(), "secret", { ignoreExpiration: true });
   // console.log(user)
-  const userId = user.data.id
-  const name = user.data.name
+  const userId = user.id
+  const name = user.name
 
   // console.log(user.data.id, '==============');
 
