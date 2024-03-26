@@ -2,7 +2,6 @@ var express = require("express");
 var router = express();
 const db = require("../models");
 const md5 = require("md5");
-// const { Jwt } = require('jsonwebtoken');
 const jwt = require("jsonwebtoken");
 
 router.post("/create", async function (req, res, next) {

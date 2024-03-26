@@ -4,6 +4,7 @@ const db = require("../models");
 const md5 = require("md5");
 // const { Jwt } = require('jsonwebtoken');
 const jwt = require("jsonwebtoken");
+const { where, Op } = require("sequelize");
 
 // create------------------
 router.post("/create", async function (req, res, next) {
@@ -13,7 +14,40 @@ router.post("/create", async function (req, res, next) {
 });
 // --------------------read
 router.get("/list", async function (req, res, next) {
-  const ques = await db.question_table.findAll({});
+
+  const where = {};
+  const { q } = req.query;
+
+  if (q) {
+    where[Op.or] = [
+      {
+        question: {
+          [Op.like]: `%${q}%`
+        }
+      },
+      {
+        option1: {
+          [Op.like]: `%${q}%`
+        }
+      },
+      {
+        option2: {
+          [Op.like]: `%${q}%`
+        }
+      },
+      {
+        option3: {
+          [Op.like]: `%${q}%`
+        }
+      },
+      {
+        option4: {
+          [Op.like]: `%${q}%`
+        }
+      }]
+  }
+  const ques = await db.question_table.findAndCountAll({ where });
+  // const ques = await db.question_table.findAll({});
   res.send(ques);
 });
 //-------------------update
