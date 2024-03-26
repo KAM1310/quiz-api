@@ -5,6 +5,7 @@ const md5 = require("md5");
 const jwt = require("jsonwebtoken");
 
 router.post("/register", async (req, res, next) => {
+  // res.send('test');
   const payload = req.body;
   payload.password = md5(payload.password);
   try {

@@ -21,6 +21,16 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
+// app.use((req, res, next) => {
+//   console.log('===============', req.headers.authorization);
+//   const token = req.headers.authorization;
+//   const user = jwt.verify(token.replace(/Bearer/i, '').trim(), "secret");
+//   console.log(user);
+//   req.user = user ? user : {};
+//   next();
+//   // req.user = .user;
+// });
+
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
 app.use("/question", questionRouter);
@@ -42,6 +52,7 @@ app.use(function (err, req, res, next) {
   // render the error page
   res.status(err.status || 500);
   res.render("error");
+  // res.send("error");
 });
 
 module.exports = app;
