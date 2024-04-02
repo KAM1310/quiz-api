@@ -2,19 +2,19 @@ var express = require("express");
 var router = express();
 const db = require("../models");
 const jwt = require("jsonwebtoken");
+const { where, Op } = require("sequelize");
 
 const auth = (req, res, next) => {
   try {
     const { authorization: token } = req.headers;
-    const user = jwt.verify(token.replace(/Bearer/i, "").trim(), "secret", {
-      ignoreExpiration: true,
-    });
+
+    const user = jwt.verify(token.replace(/Bearer/i, '').trim(), "secret",);
+
     req.user = user.data;
     console.log(user);
     next();
   } catch (error) {
-    // res.status(400).send(error);
-    console.log(error);
+    res.status(401).send(error.message);
   }
 };
 
@@ -62,7 +62,21 @@ router.post("/create", auth, async function (req, res, next) {
 // -----------------------------------------------------------
 
 router.get("/list", async function (req, res, next) {
+  const { q } = req.query;
+  const where = {};
+  if (q) {
+    where[Op.or] = [
+      {
+        name: {
+          [Op.like]: `%${q}%`,
+        },
+      },
+    ]
+  }
   let { limit, page } = req.query;
+  console.log("-----------", limit);
+  console.log("-----------", page);
+
   if (!limit) {
     limit = 10;
   }
@@ -70,12 +84,14 @@ router.get("/list", async function (req, res, next) {
     page = 1;
   }
 
+  page = +page;
+  limit = +limit;
+
   const offset = (page - 1) * limit;
-  const quiz_table = await db.Quiz_table.findAll({
-    limit,
-    offset,
-  });
-  res.send(quiz_table);
+  const quiz_table = await db.Quiz_table.findAndCountAll({ limit, offset, where });
+  console.log("----------", quiz_table);
+
+  res.status(200).send(quiz_table);
 });
 
 // -----------------------------------------------------------
@@ -92,6 +108,7 @@ router.patch("/:id", async (req, res) => {
     res.status(400).send(error);
   }
 });
+
 
 router.delete("/:id", async (req, res, next) => {
   const { id } = req.params;
