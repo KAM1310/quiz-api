@@ -6,15 +6,16 @@ const jwt = require("jsonwebtoken");
 const auth = (req, res, next) => {
   try {
     const { authorization: token } = req.headers;
-    const user = jwt.verify(token.replace(/Bearer/i, '').trim(), "secret", { ignoreExpiration: true });
+    const user = jwt.verify(token.replace(/Bearer/i, "").trim(), "secret", {
+      ignoreExpiration: true,
+    });
     req.user = user.data;
     console.log(user);
     next();
   } catch (error) {
     // res.status(400).send(error);
-    console.log(error)
+    console.log(error);
   }
-
 };
 
 router.post("/create", auth, async function (req, res, next) {
@@ -51,15 +52,10 @@ router.post("/create", auth, async function (req, res, next) {
   const token = req.headers["authorization"];
   // console.log(token);
 
-  // const user = jwt.verify(token.replace(/Bearer/i, '').trim(), "secret", { ignoreExpiration: true });
-  // console.log(user)
   const userId = user.id;
   const name = user.name;
 
-  // console.log(user.data.id, '==============');
-
   const re = await db.Quiz_table.create({ userId, score, name });
-  // res.status(200).send(re);
   res.status(200).send(re);
 });
 
