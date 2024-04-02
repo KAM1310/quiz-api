@@ -24,14 +24,14 @@ router.post("/create", auth, async function (req, res, next) {
   const { user } = req;
   // console.log(payload);
 
-  const ids = Object.keys(payload).map(item => +item.replace(/ansID_/, ''));
+  const ids = Object.keys(payload).map((item) => +item.replace(/ansID_/, ""));
 
   // console.log(ids);
 
   const questions = await db.question_table.findAll({
     where: {
-      id: ids
-    }
+      id: ids,
+    },
   });
 
   // console.log(questions);
@@ -50,12 +50,13 @@ router.post("/create", auth, async function (req, res, next) {
 
   // console.log(score);
 
-  const token = req.headers['authorization'];
+  const token = req.headers["authorization"];
   // console.log(token);
+
   // const user = jwt.verify(token.replace(/Bearer/i, '').trim(), "secret", { ignoreExpiration: true });
   // console.log(user)
-  const userId = user.id
-  const name = user.name
+  const userId = user.id;
+  const name = user.name;
 
   // console.log(user.data.id, '==============');
 
