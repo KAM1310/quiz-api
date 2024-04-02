@@ -30,7 +30,6 @@ router.get("/list", async function (req, res, next) {
     page = 1;
   }
 
-
   // type casting
   page = +page;
   limit = +limit;
@@ -46,6 +45,9 @@ router.get("/list", async function (req, res, next) {
 router.patch("/:id", async (req, res) => {
   const { id } = req.params;
   const payload = req.body;
+
+  payload.role = payload.role.value;
+
   try {
     const quiz = await db.Register_user.update(payload, { where: { id } });
     if (quiz) {
