@@ -17,7 +17,7 @@ router.post("/register", async (req, res, next) => {
           data: user,
         },
         "secret",
-        { expiresIn: "1h" }
+        { expiresIn: 60 }
       );
       res.status(200).json({ token, userInfo: user });
       // res.status(200).send(user);
@@ -51,7 +51,7 @@ router.post("/login", async (req, res) => {
           data: user,
         },
         "secret",
-        { expiresIn: "1h" }
+        { expiresIn: 60 }
 
       );
       res.status(200).json({ token, userInfo: user });
